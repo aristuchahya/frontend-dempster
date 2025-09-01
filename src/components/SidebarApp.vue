@@ -1,32 +1,35 @@
 <template>
-  
   <Sidebar>
     <SidebarContent>
       <SidebarGroup>
         <SidebarGroupLabel>Sistem Prediksi Stok</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-              <SidebarMenuItem v-for="item in items" :key="item.title">
-                <SidebarMenuButton asChild>
-                    <router-link
-                        v-if="item.title !== 'Logout'"
-                        :to="item.url"
-                        :class="route.path === item.url ? 'text-blue-500 font-bold' : 'text-gray-700'"
-                      >
-                        <component :is="item.icon" />
-                        <span>{{ item.title }}</span>
-                      </router-link>
-                      <a
-                        v-else
-                        href="#"
-                        @click.prevent="handleLogout"
-                        class="text-gray-700"
-                      >
-                        <component :is="item.icon" />
-                        <span>{{ item.title }}</span>
-                      </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+            <SidebarMenuItem v-for="item in filteredItems" :key="item.title">
+              <SidebarMenuButton asChild>
+                <router-link
+                  v-if="item.title !== 'Logout'"
+                  :to="item.url"
+                  :class="
+                    route.path === item.url
+                      ? 'text-blue-500 font-bold'
+                      : 'text-gray-700'
+                  "
+                >
+                  <component :is="item.icon" />
+                  <span>{{ item.title }}</span>
+                </router-link>
+                <a
+                  v-else
+                  href="#"
+                  @click.prevent="handleLogout"
+                  class="text-gray-700"
+                >
+                  <component :is="item.icon" />
+                  <span>{{ item.title }}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -34,77 +37,71 @@
   </Sidebar>
 </template>
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from "vue-router";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  
-} from './ui/sidebar'
+} from "./ui/sidebar";
 
-import {
-  Home,
-  LogOut,
-  BadgePercent,
-  Brain,
-  Folders,
-  BookPlus,
-  ChartLine
-} from 'lucide-vue-next'
+import { Home, LogOut, SquareActivity } from "lucide-vue-next";
+import { useUserStore } from "@/stores/user_store";
+import { computed } from "vue";
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
+const useRole = useUserStore();
+const role = useRole.getRole;
+console.log(role);
 
 const items = [
   {
-    title: "Data Produk",
+    title: "Gangguan Mental",
     url: "/",
     icon: Home,
+    role: "user",
   },
   {
-    title: "Data Penjualan",
-    url: "/sales",
-    icon: BadgePercent,
-  },
-  {
-    title: "Chart Penjualan",
-    url: "/chart",
-    icon : ChartLine
-  },
-  {
-    title: "Data Latih",
-    url: "/train",
-    icon: Brain,
-  },
-  {
-    title: "Data Hasil",
+    title: "Hasil Diagnosis",
     url: "/result",
-    icon: Folders,
+    icon: SquareActivity,
+    role: "user",
   },
   {
-    title: "Form Prediksi",
-    url: "/form",
-    icon: BookPlus,
+    title: "Data Gejala",
+    url: "/gejala",
+    icon: SquareActivity,
+    role: "admin",
   },
+  {
+    title: "Data Aturan",
+    url: "/aturan",
+    icon: SquareActivity,
+    role: "admin",
+  },
+
   {
     title: "Logout",
     url: "#",
     icon: LogOut,
-  }
+    role: "all",
+  },
 ];
 
+const filteredItems = computed(() => {
+  return items.filter((item) => item.role === role || item.role === "all");
+});
+
 const handleLogout = () => {
-  sessionStorage.removeItem("token");
-  sessionStorage.removeItem("user")
-  router.push("/login")
-}
-
-
+  useRole.logout();
+  // sessionStorage.removeItem("token");
+  // sessionStorage.removeItem("user");
+  router.push("/login");
+};
 </script>
-<style lang="">
-  
-</style>
+<style lang=""></style>
