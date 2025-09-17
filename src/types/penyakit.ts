@@ -1,5 +1,6 @@
 export interface Penyakit {
-  id: string;
+  kd_penyakit: string;
   nama: string;
   deskripsi: string;
+  solusi: string;
 }

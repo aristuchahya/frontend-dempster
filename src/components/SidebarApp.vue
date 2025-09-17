@@ -49,7 +49,13 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 
-import { Home, LogOut, SquareActivity } from "lucide-vue-next";
+import {
+  BriefcaseMedical,
+  Home,
+  LogOut,
+  Scale,
+  SquareActivity,
+} from "lucide-vue-next";
 import { useUserStore } from "@/stores/user_store";
 import { computed } from "vue";
 
@@ -75,12 +81,18 @@ const items = [
   {
     title: "Data Gejala",
     url: "/gejala",
-    icon: SquareActivity,
+    icon: BriefcaseMedical,
     role: "admin",
   },
   {
     title: "Data Aturan",
     url: "/aturan",
+    icon: Scale,
+    role: "admin",
+  },
+  {
+    title: "Data Penyakit",
+    url: "/penyakit",
     icon: SquareActivity,
     role: "admin",
   },

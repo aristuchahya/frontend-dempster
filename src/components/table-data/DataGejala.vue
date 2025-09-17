@@ -25,7 +25,7 @@
       </template>
     </DataTable>
 
-    <form @submit="onSubmit" class="w-40 space-y-6 ml-auto">
+    <form @submit="onSubmitFile" class="w-40 space-y-6 ml-auto">
       <FormReuse name="file" type="file" accept=".xls, .xlsx" />
 
       <Button type="submit" :disabled="isSubmitting" class="cursor-pointer">
@@ -42,7 +42,13 @@ import FormReuse from "../form-data/FormReuse.vue";
 import { Button } from "../ui/button";
 import DialogGejala from "../dialog-edit/DialogGejala.vue";
 
-const { columns, gejala, handleDelete, submitFilter, isSubmitting, onSubmit } =
-  useGejala();
+const {
+  columns,
+  gejala,
+  handleDelete,
+  submitFilter,
+  isSubmitting,
+  onSubmitFile,
+} = useGejala();
 </script>
 <style></style>

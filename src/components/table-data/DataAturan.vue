@@ -2,7 +2,7 @@
   <div class="p-4 w-1/2 m-auto">
     <div class="flex">
       <h1 class="text-xl font-bold mb-4">Daftar Aturan</h1>
-      <router-link to="/form-product" class="ml-auto">
+      <router-link to="/form-aturan" class="ml-auto">
         <Button variant="default">Add</Button>
       </router-link>
     </div>

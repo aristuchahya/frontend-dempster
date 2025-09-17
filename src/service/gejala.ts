@@ -108,7 +108,7 @@ export default function useGejala() {
     validationSchema: formSchema,
   });
 
-  const onSubmit = handleSubmit(async (values) => {
+  const onSubmitFile = handleSubmit(async (values) => {
     try {
       const formData = new FormData();
       formData.append("file", values.file);
@@ -136,7 +136,7 @@ export default function useGejala() {
     columns,
     handleDelete,
     submitFilter,
-    onSubmit,
+    onSubmitFile,
     isSubmitting,
   };
 }

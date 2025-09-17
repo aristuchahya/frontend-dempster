@@ -1,4 +1,6 @@
+import FormAturan from "@/components/form-data/FormAturan.vue";
 import FormGejala from "@/components/form-data/FormGejala.vue";
+import FormPenyakit from "@/components/form-data/FormPenyakit.vue";
 import FormPertanyaan from "@/components/form-data/FormPertanyaan.vue";
 
 import FormProfile from "@/components/form-data/FormProfile.vue";
@@ -8,6 +10,7 @@ import DataGejala from "@/components/table-data/DataGejala.vue";
 import DataPenyakit from "@/components/table-data/DataPenyakit.vue";
 import Process from "@/components/table-data/Process.vue";
 import Result from "@/components/table-data/Result.vue";
+import TablePenyakit from "@/components/table-data/TablePenyakit.vue";
 import Login from "@/pages/auth/Login.vue";
 import Register from "@/pages/auth/Register.vue";
 import Layout from "@/pages/Layout.vue";
@@ -68,6 +71,27 @@ const routes = [
       {
         path: "aturan",
         component: DataAturan,
+        meta: {
+          role: ["admin"],
+        },
+      },
+      {
+        path: "form-aturan",
+        component: FormAturan,
+        meta: {
+          role: ["admin"],
+        },
+      },
+      {
+        path: "penyakit",
+        component: TablePenyakit,
+        meta: {
+          role: ["admin"],
+        },
+      },
+      {
+        path: "form-penyakit",
+        component: FormPenyakit,
         meta: {
           role: ["admin"],
         },
