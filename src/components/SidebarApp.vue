@@ -96,6 +96,12 @@ const items = [
     icon: SquareActivity,
     role: "admin",
   },
+  {
+    title: "Data User",
+    url: "/data-pasien",
+    icon: SquareActivity,
+    role: "admin",
+  },
 
   {
     title: "Logout",

@@ -20,7 +20,7 @@
             @input="(e: any) => {
     const val = e.target.value;
     if (/^[0-9]*\.?[0-9]*$/.test(val)) {
-      componentField.onChange(val === '' ? null : val);
+      componentField.onChange(val === '' ? null : Number(val));
     }
   }"
             class="py-2"

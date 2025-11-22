@@ -7,6 +7,7 @@ import FormProfile from "@/components/form-data/FormProfile.vue";
 
 import DataAturan from "@/components/table-data/DataAturan.vue";
 import DataGejala from "@/components/table-data/DataGejala.vue";
+import DataHasil from "@/components/table-data/DataHasil.vue";
 import DataPenyakit from "@/components/table-data/DataPenyakit.vue";
 import Process from "@/components/table-data/Process.vue";
 import Result from "@/components/table-data/Result.vue";
@@ -14,6 +15,7 @@ import TablePenyakit from "@/components/table-data/TablePenyakit.vue";
 import Login from "@/pages/auth/Login.vue";
 import Register from "@/pages/auth/Register.vue";
 import Layout from "@/pages/Layout.vue";
+import component from "vue-json-excel3";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -95,6 +97,13 @@ const routes = [
         meta: {
           role: ["admin"],
         },
+      },
+      {
+        path: "data-pasien",
+        component: DataHasil,
+        meta: {
+          role: ["admin"],
+        }
       },
       {
         path: "",
