@@ -52,7 +52,7 @@ import { useUserStore } from "@/stores/user_store";
 import api from "@/lib/axios";
 import { toast } from "vue-sonner";
 import { jsPDF } from "jspdf";
-// import html2canvas from "html2canvas";
+
 
 interface Result {
   penyakit: string;

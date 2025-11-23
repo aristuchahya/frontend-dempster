@@ -15,7 +15,7 @@ import TablePenyakit from "@/components/table-data/TablePenyakit.vue";
 import Login from "@/pages/auth/Login.vue";
 import Register from "@/pages/auth/Register.vue";
 import Layout from "@/pages/Layout.vue";
-import component from "vue-json-excel3";
+
 
 import { createRouter, createWebHistory } from "vue-router";
 

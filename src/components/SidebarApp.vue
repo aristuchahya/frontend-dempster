@@ -97,7 +97,7 @@ const items = [
     role: "admin",
   },
   {
-    title: "Data User",
+    title: "Data Diagnosis",
     url: "/data-pasien",
     icon: SquareActivity,
     role: "admin",
