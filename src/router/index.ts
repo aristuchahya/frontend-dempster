@@ -1,6 +1,7 @@
 import FormAturan from "@/components/form-data/FormAturan.vue";
 import FormGejala from "@/components/form-data/FormGejala.vue";
 import FormPenyakit from "@/components/form-data/FormPenyakit.vue";
+import FormPernyataan from "@/components/form-data/FormPernyataan.vue";
 import FormPertanyaan from "@/components/form-data/FormPertanyaan.vue";
 
 import FormProfile from "@/components/form-data/FormProfile.vue";
@@ -41,6 +42,13 @@ const routes = [
         meta: {
           role: ["user"],
         },
+      },
+      {
+        path: "pernyataan",
+        component: FormPernyataan,
+        meta: {
+          role: ["user"],
+        }
       },
       {
         path: "process",
@@ -119,6 +127,10 @@ const routes = [
   {
     path: "/register",
     component: Register,
+  },
+  {
+    path: "/pernyataan",
+    component: FormPernyataan
   },
   {
     path: "/form",

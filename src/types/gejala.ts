@@ -1,4 +1,9 @@
+// export interface Gejala {
+//   kd_gejala: string;
+//   nama: string;
+// }
+
 export interface Gejala {
-  kd_gejala: string;
-  nama: string;
+  code : string;
+  name: string;
 }

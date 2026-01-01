@@ -1,6 +1,12 @@
+// export interface Penyakit {
+//   kd_penyakit: string;
+//   nama: string;
+//   deskripsi: string;
+//   solusi: string;
+// }
+
 export interface Penyakit {
-  kd_penyakit: string;
-  nama: string;
-  deskripsi: string;
-  solusi: string;
+  code : string;
+  name: string;
+  solution : string;
 }
