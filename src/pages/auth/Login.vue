@@ -99,7 +99,7 @@ const onSubmit = handleSubmit(
       if (user.role == "admin") {
         await router.push("/gejala");
       } else {
-        await router.push("/");
+        await router.push("/profile");
       }
       resetForm();
     } catch (error) {

@@ -38,7 +38,7 @@ export default function useProfile() {
 
       toast.success("Profile Berhasil Ditambahkan");
       resetForm();
-      await router.push("/pertanyaan");
+      await router.push("/pernyataan");
     } catch (error) {
       toast.error("Profile Gagal Ditambahkan");
     }

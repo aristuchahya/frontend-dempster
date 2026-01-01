@@ -22,16 +22,16 @@
         <div class="text-center my-4">
           <CardTitle>Gangguan Mental</CardTitle>
           <CardDescription class="mt-3">
-            {{ result?.penyakit }}
+            {{ result?.disease_name }}
           </CardDescription>
         </div>
         <div class="text-center my-4">
           <CardTitle>Skor</CardTitle>
-          <CardDescription class="mt-3"> {{ result?.nilai }} </CardDescription>
+          <CardDescription class="mt-3"> {{ result?.score }} </CardDescription>
         </div>
         <div class="text-center my-4">
           <CardTitle>Saran</CardTitle>
-          <CardDescription class="mt-3"> {{ result?.solusi }} </CardDescription>
+          <CardDescription class="mt-3"> {{ result?.solution }} </CardDescription>
         </div>
       </CardContent>
     </Card>
@@ -55,9 +55,10 @@ import { jsPDF } from "jspdf";
 
 
 interface Result {
-  penyakit: string;
-  nilai: number;
-  solusi: string;
+  disease_name: string;
+  score: number;
+  level: string;
+  solution: string;
 }
 
 
@@ -68,8 +69,9 @@ const result = ref<Result | null>(null);
 
 const fetchLastResult = async () => {
   try {
-    const res = await api.get(`jawaban/diagnosis/${userId}/last`);
-    result.value = res.data.result;
+    // const res = await api.get(`jawaban/diagnosis/${userId}/last`);
+    const res = await api.get(`diagnosis/get_result/${userId}`)
+    result.value = res.data.best_match;
     toast.success("Berhasil mendapatkan hasil diagnosis");
   } catch (error) {
     toast.error("Gagal mendapatkan hasil diagnosis");
@@ -105,8 +107,8 @@ const downloadPdf = () => {
 
   pdf.setFontSize(12);
   pdf.setFont("helvetica", "normal");
-  pdf.text(`Gangguan Mental : ${result.value.penyakit}`, 25, 62);
-  pdf.text(`Skor : ${result.value.nilai}`, 25, 70);
+  pdf.text(`Gangguan Mental : ${result.value.disease_name}`, 25, 62);
+  pdf.text(`Skor : ${result.value.score}`, 25, 70);
 
 
   pdf.setFont("helvetica", "bold");
@@ -117,7 +119,7 @@ const downloadPdf = () => {
   pdf.setFontSize(12);
 
 
-  const text = pdf.splitTextToSize(result.value.solusi, 170);
+  const text = pdf.splitTextToSize(result.value.solution, 170);
   pdf.text(text, 25, 95);
 
 
@@ -128,7 +130,7 @@ const downloadPdf = () => {
   });
 
 
-  pdf.save(`Hasil-Diagnosis-${result.value.penyakit}.pdf`);
+  pdf.save(`Hasil-Diagnosis-${result.value.disease_name}.pdf`);
 };
 
 onMounted(() => {

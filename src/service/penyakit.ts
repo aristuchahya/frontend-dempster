@@ -13,10 +13,9 @@ export default function usePenyakit() {
 
   const columns = [
     { key: "no", label: "No" },
-    { key: "kd_penyakit", label: "Kode", headClass: "w-[100px]" },
-    { key: "nama", label: "Nama Gejala" },
-    { key: "deskripsi", label: "Deskripsi" },
-    { key: "solusi", label: "Solusi" },
+    { key: "code", label: "Kode", headClass: "w-[100px]" },
+    { key: "name", label: "Nama Penyakit" },
+    { key: "solution", label: "Solusi" },
     {
       key: "actions",
       label: "Actions",
@@ -28,7 +27,8 @@ export default function usePenyakit() {
   const fetchPenyakit = async () => {
     isLoading.value = true;
     try {
-      const res = await api.get("/penyakit");
+      // const res = await api.get("/penyakit");
+      const res = await api.get("/diagnosis/get_diseases")
       penyakit.value = res.data;
       toast.success("Data Penyakit berhasil diambil");
     } catch (error) {
@@ -39,13 +39,12 @@ export default function usePenyakit() {
   const fetchColoumn = async () => {
     try {
       isLoading.value = true;
-      const res = await api.get("/penyakit");
+      const res = await api.get("/diagnosis/get_diseases");
       const dataIndex = res.data.map((item: Penyakit, index: number) => ({
         no: index + 1,
-        kd_penyakit: item.kd_penyakit,
-        nama: item.nama,
-        deskripsi: item.deskripsi,
-        solusi: item.solusi,
+        code: item.code,
+        name: item.name,
+        solution: item.solution,
       }));
 
       penyakit_col.value = dataIndex;
@@ -58,8 +57,8 @@ export default function usePenyakit() {
 
   const handleDelete = async (kode: string) => {
     try {
-      await api.delete(`/penyakit/${kode}`);
-      penyakit.value = penyakit.value.filter((p) => p.kd_penyakit !== kode);
+      await api.delete(`/diagnosis/delete_disease/${kode}`);
+      penyakit.value = penyakit.value.filter((p) => p.code !== kode);
       toast.success("Penyakit Berhasil Dihapus");
       router.go(0);
     } catch (error) {
@@ -109,8 +108,8 @@ export default function usePenyakit() {
     penyakit,
     isLoading,
     fetchPenyakit,
-    handleDelete,
     submitFilter,
+    handleDelete,
     columns,
     penyakit_col,
   };

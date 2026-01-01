@@ -40,26 +40,27 @@ const emit = defineEmits(["updated"]);
 
 const formSchema = toTypedSchema(
   z.object({
-    kd_penyakit: z.string().optional(),
-    nama: z.string().optional(),
-    deskripsi: z.string().optional(),
-    solusi: z.string().optional(),
+    code: z.string().optional(),
+    name: z.string().optional(),
+    // deskripsi: z.string().optional(),
+    solution: z.string().optional(),
   })
 );
 
 const { handleSubmit, resetForm, isSubmitting } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    kd_penyakit: props.penyakit.kd_penyakit,
-    nama: props.penyakit.nama,
-    deskripsi: props.penyakit.deskripsi,
-    solusi: props.penyakit.solusi,
+    code: props.penyakit.code,
+    name: props.penyakit.name,
+    // deskripsi: props.penyakit.deskripsi,
+    solution: props.penyakit.solution,
   },
 });
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await api.patch(`/penyakit/${values.kd_penyakit}`, values);
+    // await api.patch(`/penyakit/${values.kd_penyakit}`, values);
+    await api.patch(`/diagnosis/update_disease/${values.code}`, values);
     toast.success("Penyakit Berhasil Diupdate");
     resetForm();
     emit("updated");

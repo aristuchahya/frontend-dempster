@@ -15,8 +15,8 @@ export default function useGejala() {
 
   const columns = [
     { key: "no", label: "No" },
-    { key: "kd_gejala", label: "Kode", headClass: "w-[100px]" },
-    { key: "nama", label: "Nama Gejala" },
+    { key: "code", label: "Kode", headClass: "w-[100px]" },
+    { key: "name", label: "Nama Gejala" },
     {
       key: "actions",
       label: "Actions",
@@ -28,11 +28,12 @@ export default function useGejala() {
   const fetchGejala = async () => {
     try {
       isLoading.value = true;
-      const res = await api.get("/gejala");
+      // const res = await api.get("/gejala");
+      const res = await api.get("/diagnosis/get_symptoms")
       const dataIndex = res.data.map((item: Gejala, index: number) => ({
         no: index + 1,
-        kd_gejala: item.kd_gejala,
-        nama: item.nama,
+        code: item.code,
+        name: item.name,
       }));
 
       gejala.value = dataIndex;
@@ -45,8 +46,8 @@ export default function useGejala() {
 
   const handleDelete = async (kode: string) => {
     try {
-      await api.delete(`/gejala/${kode}`);
-      gejala.value = gejala.value.filter((p) => p.kd_gejala !== kode);
+      await api.delete(`/diagnosis/delete_symptoms/${kode}`);
+      gejala.value = gejala.value.filter((p) => p.code !== kode);
       toast.success("Gejala Berhasil Dihapus");
       router.go(0);
     } catch (error) {
@@ -66,7 +67,7 @@ export default function useGejala() {
     }
     gejala.value = allResult.value
       .map((product: any) => {
-        return [`${product.kd_gejala} ${product.nama} `.toLowerCase(), product];
+        return [`${product.code} ${product.name} `.toLowerCase(), product];
       })
       .filter(([strMatch]) => {
         let matchAll = false;

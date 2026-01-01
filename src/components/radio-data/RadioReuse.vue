@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <FormField v-slot="{ componentField }" :type="type" :name="name">
       <FormItem class="space-y-3 my-4">
@@ -72,4 +72,44 @@ const {
 
 defineEmits(["update:modelValue"]);
 </script>
-<style></style>
+<style></style> -->
+
+<template>
+  <div class="space-y-3 my-4">
+    <p class="font-medium">{{ label }}</p>
+
+    <RadioGroup v-model="internalValue" class="space-y-2">
+      <div
+        v-for="option in options"
+        :key="option.id"
+        class="flex items-center gap-x-3"
+      >
+        <RadioGroupItem :value="option.id" />
+        <span>{{ option.label }}</span>
+      </div>
+    </RadioGroup>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+
+const props = defineProps<{
+  label: string
+  options: {
+    id: string
+    label: string
+  }[]
+  modelValue?: string
+}>()
+
+const emit = defineEmits(["update:modelValue"])
+
+const internalValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
+})
+</script>
+
+
