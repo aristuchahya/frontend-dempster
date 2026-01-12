@@ -17,9 +17,12 @@
           <div v-for="item in statements" :key="item.id">
             <RadioReuse
               :label="item.text"
-              :options="answerByStatement[item.id] || []"
+              :name="item.code"
+              :options="answerByStatement[item.id]"
               :model-value="selectedAnswers[item.code] ?? null"
               @update:modelValue="val => selectedAnswers[item.code] = val"
+
+
             />
           </div>
           <Button
@@ -40,10 +43,10 @@ import usePernyataan from '@/service/pernyataan';
 import RadioReuse from '../radio-data/RadioReuse.vue';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { useForm } from 'vee-validate';
+// import { useForm } from 'vee-validate';
 
-const {submitDiagnosis, answerByStatement, isLoading, selectedAnswers, statements} = usePernyataan()
-const { isSubmitting } = useForm();
+const {submitDiagnosis, answerByStatement, isLoading, selectedAnswers, statements, isSubmitting} = usePernyataan()
+// const { isSubmitting } = useForm();
 
 
 </script>

@@ -8,5 +8,6 @@
 export interface Penyakit {
   code : string;
   name: string;
-  solution : string;
+  description: string;
+  solution: string;
 }

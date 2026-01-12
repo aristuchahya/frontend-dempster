@@ -1,7 +1,7 @@
 export interface Aturan {
-  gejala_code: string;
-  nama_gejala: string;
-  penyakit_code: string;
-  nama_penyakit: string;
-  bobot: number;
+  id: string;
+  category: string;
+  min_score: number;
+  max_score: number;
+  level: string;
 }

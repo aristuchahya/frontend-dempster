@@ -15,11 +15,10 @@ export default function useAturan() {
 
   const columns = [
     { key: "no", label: "No" },
-    { key: "gejala_code", label: "Kode Gejala", headClass: "w-[100px]" },
-    { key: "nama_gejala", label: "Nama Gejala" },
-    { key: "penyakit_code", label: "Kode Penyakit", headClass: "w-[100px]" },
-    { key: "nama_penyakit", label: "Nama Penyakit" },
-    { key: "bobot", label: "Bobot" },
+    { key: "category", label: "Kategori", headClass: "w-[100px]" },
+    { key: "min_score", label: "Skor Minimal" },
+    { key: "max_score", label: "Skor Maksimal", headClass: "w-[100px]" },
+    { key: "level", label: "Tingkat" },
     {
       key: "actions",
       label: "Actions",
@@ -31,14 +30,14 @@ export default function useAturan() {
   const fetchAturan = async () => {
     isLoading.value = true;
     try {
-      const res = await api.get("/aturan");
+      const res = await api.get("/admin/rules");
       const dataIndex = res.data.map((item: Aturan, index: number) => ({
         no: index + 1,
-        gejala_code: item.gejala_code,
-        nama_gejala: item.nama_gejala,
-        penyakit_code: item.penyakit_code,
-        nama_penyakit: item.nama_penyakit,
-        bobot: item.bobot,
+        category: item.category,
+        min_score: item.min_score,
+        max_score: item.max_score,
+        level: item.level,
+        
       }));
 
       aturan.value = dataIndex;
@@ -51,8 +50,8 @@ export default function useAturan() {
 
   const handleDelete = async (kode: string) => {
     try {
-      await api.delete(`/aturan/${kode}`);
-      aturan.value = aturan.value.filter((p) => p.gejala_code !== kode);
+      await api.delete(`/admin/rule/${kode}`);
+      aturan.value = aturan.value.filter((p) => p.id !== kode);
       toast.success("Aturan Berhasil Dihapus");
       router.go(0);
     } catch (error) {
@@ -73,7 +72,7 @@ export default function useAturan() {
     aturan.value = allResult.value
       .map((product: any) => {
         return [
-          `${product.gejala_code} ${product.nama_gejala} ${product.penyakit_code} ${product.nama_penyakit} ${product.bobot}`.toLowerCase(),
+          `${product.category} ${product.min_score} ${product.max_score} ${product.level} `.toLowerCase(),
           product,
         ];
       })

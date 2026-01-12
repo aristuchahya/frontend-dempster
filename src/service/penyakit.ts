@@ -11,6 +11,27 @@ export default function usePenyakit() {
   const allResult = ref([]);
   const penyakit_col = ref([] as Penyakit[]);
 
+  const penyakitData : Penyakit[] = [
+    {
+      "code": "P001",
+      "name": "Gangguan Depresi (Depression Disorder)",
+      "description": "Depresi adalah gangguan mental yang umumnya ditandai dengan perasaan depresi, kehilangan minat atau kesenangan, penurunan energi, perasaan bersalah atau rendah diri, sulit tidur atau nafsu makan berkurang, perasaan kelelahan dan kurang konsentrasi. Kondisi tersebut dapat menjadi kronis dan berulang, dan secara substansial dapat mengganggu kemampuan individu dalam menjalankan tanggung jawab sehari-hari",
+      "solution": "Berikut ini adalah beberapa cara untuk mengatasi gangguan depresi yaitu tetap berhubungan dengan orang lain, lakukan hal yang menyenangkan, aktif bergerak, makan makanan sehat anti depresi (misalnya : buah-buahan sayuran hijau, dapatkan paparan sinar matahari)"
+    },
+    {
+      "code": "P002",
+      "name": "Gangguan Kecemasan (Anxiety Disorder)",
+      "description": "Anxiety disorder adalah gangguan mental yang menyebabkan rasa cemas dan takut berlebih. Hal tersebut membuat Anda menjadi tidak semangat untuk melakukan kegiatan sehari-hari, termasuk hobi yang biasa digemari.",
+      "solution": "Berikut ini beberapa cara untuk mengurangi kecemasan yang bisa dilakukan yaitu berolahrga, meditasi, relaksasi, menulis, aromaterapi, dan meminum teh herbal untuk menenangkan"
+    },
+    {
+      "code": "P003",
+      "name": "Gangguan Stres (Stress Disorder)",
+      "description": "Stres merupakan pengalaman subyektif yang didasarkan pada persepsi seseorang terhadap situasi yang dihadapinya. Stres berkaitan dengan kenyataan yang tidak sesuai dengan harapan atau situasi yang menekan. Kondisi ini mengakibatkan perasaan cemas, merah dan frustasi",
+      "solution": "Berikut ini adalah beberapa cara untuk mengatasi gangguan stres yaitu berolahraga secara rutin, makan sehat, tidur cukup, hidup bersih, melakukan kegiatan sesuaikan dengan minat dan kemampuan, tenangkan pikiran dan berpikiran positif"
+    }
+  ]
+
   const columns = [
     { key: "no", label: "No" },
     { key: "code", label: "Kode", headClass: "w-[100px]" },
@@ -112,5 +133,6 @@ export default function usePenyakit() {
     handleDelete,
     columns,
     penyakit_col,
+    penyakitData
   };
 }

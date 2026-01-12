@@ -5,11 +5,11 @@ import { toTypedSchema } from "@vee-validate/zod";
 import api from "@/lib/axios";
 import { useRouter } from "vue-router";
 import type { Profile } from "@/types/profile";
-import { useUserStore } from "@/stores/user_store";
+import { useResultStore } from "@/stores/result";
+
 export default function useProfile() {
   const router = useRouter();
-  const userStore = useUserStore();
-  const userId = userStore.getUserId;
+  const userStore = useResultStore()
 
   const formSchema = toTypedSchema(
     z.object({
@@ -34,15 +34,33 @@ export default function useProfile() {
 
   const onSubmit = handleSubmit(async (values) => {
     try {
-      await api.post("/user", { ...values, user_id: userId });
+      const res = await api.post(`/admin/create-user`, values);
 
-      toast.success("Profile Berhasil Ditambahkan");
+      const userId = res.data?.data?.id
+
+      if (!userId) throw new Error("User ID not found")
+      
+      userStore.setUser(userId)
+      
+      toast.success("Berhasil Ditambahkan");
       resetForm();
-      await router.push("/pernyataan");
+      await router.push("/pernyataan-2");
     } catch (error) {
-      toast.error("Profile Gagal Ditambahkan");
+      toast.error("Gagal Ditambahkan");
     }
-  });
+  })
+
+  // const onSubmit = handleSubmit(async (values) => {
+  //   try {
+  //     await api.post("/user", { ...values, user_id: userId });
+
+  //     toast.success("Profile Berhasil Ditambahkan");
+  //     resetForm();
+  //     await router.push("/pernyataan");
+  //   } catch (error) {
+  //     toast.error("Profile Gagal Ditambahkan");
+  //   }
+  // });
 
   return {
     onSubmit,

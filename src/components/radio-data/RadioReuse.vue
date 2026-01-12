@@ -78,14 +78,23 @@ defineEmits(["update:modelValue"]);
   <div class="space-y-3 my-4">
     <p class="font-medium">{{ label }}</p>
 
-    <RadioGroup v-model="internalValue" class="space-y-2">
+    <RadioGroup
+      v-model="internalValue"
+      :name="name"
+      class="space-y-2"
+    >
       <div
         v-for="option in options"
-        :key="option.id"
+        :key="option.value"
         class="flex items-center gap-x-3"
       >
-        <RadioGroupItem :value="option.id" />
-        <span>{{ option.label }}</span>
+        <RadioGroupItem
+          :id="`${name}-${option.value}`"
+          :value="String(option.value)"
+        />
+        <label :for="`${name}-${option.value}`">
+          {{ option.label }}
+        </label>
       </div>
     </RadioGroup>
   </div>
@@ -97,19 +106,31 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 const props = defineProps<{
   label: string
+  name: string
   options: {
-    id: string
+    value: number
     label: string
   }[]
-  modelValue?: string
+  modelValue?: number | null
 }>()
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits<{
+  (e: "update:modelValue", value: number | null): void
+}>()
 
-const internalValue = computed({
-  get: () => props.modelValue,
-  set: (val) => emit("update:modelValue", val),
+const internalValue = computed<string | null>({
+  get: () =>
+    props.modelValue !== undefined && props.modelValue !== null
+      ? String(props.modelValue)
+      : null,
+  set: (val) => {
+    emit("update:modelValue", val ? Number(val) : null)
+  },
 })
 </script>
+
+
+
+
 
 
