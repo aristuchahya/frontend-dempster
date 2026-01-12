@@ -18,6 +18,7 @@ import Register from "@/pages/auth/Register.vue";
 import Layout from "@/pages/Layout.vue";
 
 
+
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -57,13 +58,13 @@ const routes = [
           role: ["user"],
         },
       },
-      {
-        path: "result",
-        component: Result,
-        meta: {
-          role: ["user"],
-        },
-      },
+      // {
+      //   path: "result",
+      //   component: Result,
+      //   meta: {
+      //     role: ["user"],
+      //   },
+      // },
       {
         path: "gejala",
         component: DataGejala,
@@ -129,8 +130,20 @@ const routes = [
     component: Register,
   },
   {
-    path: "/pernyataan",
+    path: "/dashboard",
+    component: DataPenyakit
+  },
+  {
+    path: "/create-user",
+    component: FormProfile
+  },
+  {
+    path: "/pernyataan-2",
     component: FormPernyataan
+  },
+  {
+    path: "/result",
+    component: Result
   },
   {
     path: "/form",
@@ -176,7 +189,7 @@ const router = createRouter({
 router.beforeEach((to, _, next) => {
   const token = sessionStorage.getItem("token");
   if (to.meta.requiresAuth && !token) {
-    next("/login");
+    next("/dashboard");
   } else {
     next();
   }

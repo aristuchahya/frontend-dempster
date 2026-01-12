@@ -9,9 +9,10 @@
       </CardHeader>
       <CardContent>
         <form @submit="onSubmit" class="flex flex-col">
-          <FormReuse name="penyakit_code" type="text" label="Kode Penyakit" />
-          <FormReuse name="gejala_code" type="text" label="Kode Gejala" />
-          <FormReuse name="bobot" type="number" label="Bobot" />
+          <FormReuse name="category" type="text" label="Kategori" />
+          <FormReuse name="min_score" type="number" label="Skor Minimal" />
+          <FormReuse name="max_score" type="number" label="Skor Maksimal" />
+          <FormReuse name="level" type="text" label="Tingkat" />
 
           <Button
             type="submit"
@@ -47,14 +48,21 @@ const router = useRouter();
 
 const formSchema = toTypedSchema(
   z.object({
-    penyakit_code: z.string().min(1, "Kode Penyakit tidak boleh kosong"),
-    gejala_code: z.string().min(1, "Kode Gejala tidak boleh kosong"),
-    bobot: z
+    category: z.string().min(1, "Kategori tidak boleh kosong"),
+    level: z.string().min(1, "Level tidak boleh kosong"),
+    min_score: z
       .string()
       .regex(/^[0-9]*\.?[0-9]*$/, "Bobot harus angka")
       .transform((val) => (val === "" ? null : parseFloat(val)))
       .refine((val) => val !== null && val >= 0, {
-        message: "Bobot minimal 0",
+        message: "Score minimal 0",
+      }),
+    max_score: z
+      .string()
+      .regex(/^[0-9]*\.?[0-9]*$/, "Bobot harus angka")
+      .transform((val) => (val === "" ? null : parseFloat(val)))
+      .refine((val) => val !== null && val >= 0, {
+        message: "Score minimal 0",
       }),
   })
 );
@@ -65,7 +73,7 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await api.post("/aturan", values);
+    await api.post("/admin/create-rule", values);
     toast.success("aturan Berhasil Ditambahkan");
     resetForm();
     await router.push("/aturan");

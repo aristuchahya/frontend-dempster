@@ -2,7 +2,7 @@
   <Sidebar>
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Sistem Prediksi Stok</SidebarGroupLabel>
+        <SidebarGroupLabel>Sistem Diagnosis Mental</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem v-for="item in filteredItems" :key="item.title">
