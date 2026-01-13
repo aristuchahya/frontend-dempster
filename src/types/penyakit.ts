@@ -11,3 +11,12 @@ export interface Penyakit {
   description: string;
   solution: string;
 }
+
+export interface TablePenyakit {
+  id: string;
+  name: string;
+  category: string;
+  level: string;
+  description: string;
+
+}

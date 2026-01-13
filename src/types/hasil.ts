@@ -4,16 +4,24 @@
 //     nilai : number
 // }
 
+// export interface Hasil {
+// user: {
+//     id: string
+//     name: string
+//   }
+//   diagnosis: {
+//     disease_code: string
+//     disease_name: string
+//     score: number
+//     level: string
+//     solution: string
+//   }
+// }
+
 export interface Hasil {
-user: {
-    id: string
-    name: string
-  }
-  diagnosis: {
-    disease_code: string
-    disease_name: string
-    score: number
-    level: string
-    solution: string
-  }
+  id: string
+  nama: string;
+  category: string
+  level: string
+  disease: string
 }

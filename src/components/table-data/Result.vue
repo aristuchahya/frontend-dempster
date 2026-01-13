@@ -168,94 +168,109 @@ const clearSession = async () => {
 // };
 
 const downloadPdf = () => {
-  if (!result.value) {
+  if (!result.value?.results?.length) {
     toast.error("Tidak ada hasil diagnosis untuk diunduh");
     return;
   }
 
   const pdf = new jsPDF("p", "mm", "a4");
+  const pageWidth = 210;
+  const marginX = 20;
+  const contentWidth = pageWidth - marginX * 2;
+
+  let y = 20;
 
 
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(20);
-  pdf.text("Laporan Hasil Diagnosis Kesehatan Mental", 105, 20, { align: "center" });
+  pdf.setFontSize(18);
+  pdf.text(
+    "LAPORAN HASIL DIAGNOSIS KESEHATAN MENTAL",
+    pageWidth / 2,
+    y,
+    { align: "center" }
+  );
 
+  y += 10;
   pdf.setFontSize(11);
   pdf.setFont("helvetica", "normal");
-  pdf.text(`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`, 20, 30);
-  pdf.text(`Nama Lengkap: ${profile.value?.nama || "User"}`, 20, 37);
-  pdf.text(`Umur: ${profile.value?.umur || "User"}`, 20, 44);
-  pdf.text(`Jenis Kelamin: ${profile.value?.jenis_kelamin || "User"}`, 20, 51);
-  pdf.text(`Prodi: ${profile.value?.prodi || "User"}`, 20, 58);
+  pdf.text(`Tanggal Cetak : ${new Date().toLocaleDateString("id-ID")}`, marginX, y);
+  y += 6;
+  pdf.text(`Nama Lengkap : ${profile.value?.nama ?? "-"}`, marginX, y);
+  y += 6;
+  pdf.text(`Umur         : ${profile.value?.umur ?? "-"}`, marginX, y);
+  y += 6;
+  pdf.text(`Jenis Kelamin: ${profile.value?.jenis_kelamin ?? "-"}`, marginX, y);
+  y += 6;
+  pdf.text(`Prodi        : ${profile.value?.prodi ?? "-"}`, marginX, y);
 
-
+  y += 5;
   pdf.setLineWidth(0.5);
-  pdf.line(20, 42, 190, 42);
-
-  let y = 25;
-
-  pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(14);
-  pdf.text("Hasil Diagnosis", 20, 52);
+  pdf.line(marginX, y, pageWidth - marginX, y);
   y += 10;
 
-  pdf.setFontSize(12);
-  pdf.setFont("helvetica", "normal");
-
-  result.value?.results?.forEach((item, index) => {
-  pdf.setFontSize(12);
-  pdf.text(`${index + 1}. ${item.category}`, 25, y);
-  y += 8;
-
-  pdf.setFontSize(10);
-  pdf.text(`Tingkat   : ${item.level}`, 30, y); y += 6;
-  pdf.text(`Gangguan  : ${item.disease}`, 30, y); y += 6;
-
-  const descLines = pdf.splitTextToSize(
-    `Deskripsi : ${item.description}`,
-    155
-  );
-  pdf.text(descLines, 30, y);
-  y += descLines.length * 6;
-
-  const solLines = pdf.splitTextToSize(
-    `Solusi : ${item.solution}`,
-    155
-  );
-  pdf.text(solLines, 30, y);
-  y += solLines.length * 6 + 8;
-
-  pdf.line(25, y, 185, y);
-  y += 8;
-
-  // auto page break
-  if (y > 270) {
-    pdf.addPage();
-    y = 25;
-  }
-});
-
 
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(14);
-  pdf.text("Saran / Rekomendasi", 20, 85);
+  pdf.text("HASIL DIAGNOSIS", marginX, y);
+  y += 8;
+
 
   pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(12);
+  pdf.setFontSize(11);
 
+  result.value.results.forEach((item, index) => {
+    // Page break
+    if (y > 260) {
+      pdf.addPage();
+      y = 20;
+    }
 
-  // const text = pdf.splitTextToSize(result.value.solution, 170);
-  // pdf.text(text, 25, 95);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(`${index + 1}. ${item.category}`, marginX, y);
+    y += 6;
 
+    pdf.setFont("helvetica", "normal");
+    pdf.text(`Tingkat   : ${item.level}`, marginX + 5, y);
+    y += 5;
+    pdf.text(`Gangguan  : ${item.disease}`, marginX + 5, y);
+    y += 5;
 
-  pdf.setFontSize(10);
-  pdf.setTextColor(150);
-  pdf.text("Dicetak otomatis oleh Sistem Diagnosis Dempster-Shafer", 105, 285, {
-    align: "center",
+    // Deskripsi
+    const desc = pdf.splitTextToSize(
+      `Deskripsi : ${item.description}`,
+      contentWidth - 10
+    );
+    pdf.text(desc, marginX + 5, y);
+    y += desc.length * 5 + 2;
+
+    // Solusi
+    const sol = pdf.splitTextToSize(
+      `Solusi : ${item.solution}`,
+      contentWidth - 10
+    );
+    pdf.text(sol, marginX + 5, y);
+    y += sol.length * 5 + 6;
+
+    pdf.setLineWidth(0.3);
+    pdf.line(marginX, y, pageWidth - marginX, y);
+    y += 8;
   });
 
 
-  pdf.save(`Hasil-Diagnosis-${result.value.results[0].category}.pdf`);
+  const totalPages = pdf.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    pdf.setPage(i);
+    pdf.setFontSize(9);
+    pdf.setTextColor(150);
+    pdf.text(
+      "Dicetak otomatis oleh Sistem Diagnosis Dempster-Shafer",
+      pageWidth / 2,
+      287,
+      { align: "center" }
+    );
+  }
+
+  pdf.save(`Hasil-Diagnosis-${profile.value?.nama ?? "User"}.pdf`);
 };
 
 onMounted(() => {

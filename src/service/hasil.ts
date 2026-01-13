@@ -10,22 +10,24 @@ export default function useHasil() {
 
     const columns = [
         { key: "no", label: "No" },
-        { key: "name", label: "Nama" },
-        { key: "disease_name", label: "Penyakit" },
-        { key: "score", label: "Nilai" },
+        { key: "nama", label: "Nama" },
+        { key: "disease", label: "Penyakit" },
+        { key: "level", label: "Tingkat" },
+        { key: "category", label: "Kategori" },
     ]
 
     const fetchHasil = async () => {
         isLoading.value = true;
         try {
             // const res = await api.get("/diagnosis");
-            const res = await api.get("/diagnosis/get_all_result")
-            const json_res = res.data 
+            const res = await api.get("/admin/all-diagnosis")
+            const json_res = res.data.results 
             const dataIndex = json_res.map((item: Hasil, index: number) => ({
                 no: index + 1,
-                name: item.user.name,
-                disease_name: item.diagnosis.disease_name,
-                score: item.diagnosis.score
+                nama: item.nama,
+                category: item.category,
+                level: item.level,
+                disease : item.disease
             }))
 
             hasil.value = dataIndex;
@@ -49,7 +51,7 @@ export default function useHasil() {
     }
     hasil.value = allResult.value
       .map((product: any) => {
-        return [`${product.name} ${product.disease_name} `.toLowerCase(), product];
+        return [`${product.name} ${product.category} ${product.level} ${product.disease} `.toLowerCase(), product];
       })
       .filter(([strMatch]) => {
         let matchAll = false;

@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import type { Penyakit } from "@/types/penyakit";
+import type { Penyakit, TablePenyakit } from "@/types/penyakit";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -9,7 +9,7 @@ export default function usePenyakit() {
   const penyakit = ref([] as Penyakit[]);
   const isLoading = ref(false);
   const allResult = ref([]);
-  const penyakit_col = ref([] as Penyakit[]);
+  const penyakit_col = ref([] as TablePenyakit[]);
 
   const penyakitData : Penyakit[] = [
     {
@@ -34,9 +34,11 @@ export default function usePenyakit() {
 
   const columns = [
     { key: "no", label: "No" },
-    { key: "code", label: "Kode", headClass: "w-[100px]" },
+    { key: "id", label: "Kode", headClass: "w-[100px]" },
     { key: "name", label: "Nama Penyakit" },
-    { key: "solution", label: "Solusi" },
+    { key: "description", label: "Deskripsi" },
+    { key: "category", label: "Kategori" },
+    { key: "level", label: "Tingkat" },
     {
       key: "actions",
       label: "Actions",
@@ -60,12 +62,14 @@ export default function usePenyakit() {
   const fetchColoumn = async () => {
     try {
       isLoading.value = true;
-      const res = await api.get("/diagnosis/get_diseases");
-      const dataIndex = res.data.map((item: Penyakit, index: number) => ({
+      const res = await api.get("/admin/mental-disorder");
+      const dataIndex = res.data.map((item: TablePenyakit, index: number) => ({
         no: index + 1,
-        code: item.code,
+        id: item.id,
         name: item.name,
-        solution: item.solution,
+        description: item.description,
+        category: item.category,
+        level: item.level
       }));
 
       penyakit_col.value = dataIndex;
