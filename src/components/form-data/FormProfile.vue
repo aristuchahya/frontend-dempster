@@ -21,7 +21,7 @@
           <FormReuse name="whatsapp" type="text" label="Nomor Whatsapp" />
           <FormReuse name="alamat" type="text" label="Alamat Domisili" />
           <FormReuse name="nama_orangtua" type="text" label="Nama Orangtua" />
-          <FormReuse name="noip" type="text" label="Nomor Ip" />
+          <!-- <FormReuse name="noip" type="text" label="Nomor Ip" /> -->
           <FormReuse
             name="tanggal"
             type="date"
@@ -30,12 +30,12 @@
           />
           <FormReuse name="prodi" type="text" label="Program Studi" />
           <FormReuse name="semester" type="text" label="Semester" />
-          <SelectReuse
+          <!-- <SelectReuse
             name="asuransi"
             label="Kepemilikan Asuransi"
             group-label="Kepemilikan Asuransi"
             :options="['Ada', 'Tidak Ada']"
-          />
+          /> -->
           <Button
             type="submit"
             :disabled="isSubmitting"

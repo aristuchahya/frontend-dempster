@@ -1,61 +1,88 @@
 <template>
-  <div>
-    <Card class="mt-4 w-1/2 mx-auto max-h-fit">
-      <CardHeader class="text-center">
-        <CardTitle>Hasil Diagnosis</CardTitle>
-        <CardDescription class="mt-4"
-          >Berikut hasil diagnosis anda
+  <div class="px-4 py-6">
+    <Card class="max-w-4xl mx-auto shadow-md">
+      
+      <!-- HEADER -->
+      <CardHeader class="relative text-center space-y-2">
+        <CardTitle class="text-2xl font-bold">
+          Hasil Diagnosis
+        </CardTitle>
+        <CardDescription>
+          Ringkasan kondisi kesehatan mental berdasarkan assessment Anda
         </CardDescription>
-        <button
+
+        <Button
           @click="downloadPdf"
-          class="absolute right-4 top-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
+          class="absolute right-4 top-4"
+          size="sm"
         >
           Download PDF
-        </button>
+        </Button>
       </CardHeader>
 
-      <CardContent>
-        <div class="my-4">
-          <BadgeCheck class="w-60 h-60 mx-auto" color="#08CB00" />
-        </div>
-        
-        <div
-        v-for="item in result?.results"
-        class="border rounded-lg p-4 my-4"
-        >
-          <div class="text-center my-2">
-            <CardTitle>{{ item.category }}</CardTitle>
-            <CardDescription class="mt-1 text-sm">
-              Tingkat: <strong>{{ item.level }}</strong>
-            </CardDescription>
+      <CardContent class="space-y-8">
+
+        <!-- RINGKASAN SKOR -->
+        <section v-if="result?.scores.length">
+          <h3 class="text-lg font-semibold text-center mb-4">
+            Ringkasan Skor
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div
+              v-for="s in result.scores"
+              :key="s.category"
+              class="rounded-xl border p-4 text-center bg-muted/40"
+            >
+              <p class="text-sm font-medium text-muted-foreground">
+                {{ s.category }}
+              </p>
+              <p class="text-3xl font-bold mt-1">
+                {{ s.final_score }}
+              </p>
+            </div>
           </div>
+        </section>
 
-          <div class="text-center my-4">
-          <CardTitle>Gangguan Mental</CardTitle>
-          <CardDescription class="mt-3">
-            {{ item.disease }}
-          </CardDescription>
-        </div>
+        <!-- DETAIL DIAGNOSIS -->
+        <section v-if="result?.results.length">
+          <h3 class="text-lg font-semibold text-center mb-4">
+            Rekomendasi & Saran
+          </h3>
 
-        <div class="text-center my-4">
-          <CardTitle>Deskripsi</CardTitle>
-          <CardDescription class="mt-3"> {{ item.description}} </CardDescription>
-        </div>
-        <div class="text-center my-4">
-          <CardTitle>Saran</CardTitle>
-          <CardDescription class="mt-3"> {{ item.solution }} </CardDescription>
-        </div>
-        </div>
-        <div>
-          <Button
-            type="button"
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              v-for="item in result.results"
+              :key="item.category"
+              class="rounded-xl border p-5 space-y-4 hover:shadow-sm transition"
+            >
+              <!-- HEADER -->
+              <div class="text-center">
+                <h4 class="font-semibold text-lg">
+                  {{ item.category }}
+                </h4>
+
+                <p class="text-sm text-muted-foreground">
+                  Tingkat:
+                  <span class="font-medium">
+                    {{ item.level }}
+                  </span>
+                </p>
+              </div>
+
+              <!-- SARAN -->
+              <div class="text-sm leading-relaxed text-center">
+                {{ item.solution }}
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <Button type="button"
             class="cursor-pointer mt-4 ml-auto"
-            @click="clearSession"
-          >
-            Kembali
-          </Button>
-        </div>
-        
+            @click="clearSession">Kembali</Button>
+          </div>
+        </section>
+
       </CardContent>
     </Card>
   </div>
@@ -70,7 +97,7 @@ import {
   CardHeader,
 } from "../ui/card";
 
-import { BadgeCheck } from "lucide-vue-next";
+
 // import { useUserStore } from "@/stores/user_store";
 import api from "@/lib/axios";
 import { toast } from "vue-sonner";
@@ -82,56 +109,63 @@ import { Button } from "../ui/button";
 
 
 
-// interface Result {
-//   disease_name: string;
-//   score: number;
-//   level: string;
-//   solution: string;
-// }
+
 
 interface Score {
-  "category": string;
-  "final_score": number;
+  category: string
+  raw_score: number
+  final_score: number
 }
 
-
-interface Result {
-  "category": string;
-  "level": string;
-  "disease": string;
-  "description": string;
-  "solution": string;
+interface ResultItem {
+  category: string
+  level: string
+  disease: string
+  description: string
+  solution: string
 }
 
-interface Results {
-  "assesment_id": string
-  "score": Score[]
-  "results": Result[]
+interface DiagnosisResponse {
+  assessment_id: string
+  scores: Score[]
+  results: ResultItem[]
 }
-
 const userStore = useResultStore();
 const userId = userStore.id
 
 // const result = ref<Result | null>(null);
-const result = ref<Results | null>(null);
+const result = ref<DiagnosisResponse | null>(null);
 const profile = ref<Profile | null>(null);
 
 // const userId = "b1lpqsd0pw"
 
+
+
 const fetchDiagnosis = async () => {
   try {
-    const res_asessment = await api.get(`/assesment/${userId}`)
-    const assesment_id = res_asessment.data?.asessment_id
-    if (!assesment_id) throw new Error("Assesment ID not found")
+    
+    const resAssessment = await api.get(`/assesment/${userId}`)
+    const assessment_id = resAssessment.data?.asessment_id
+    console.log(assessment_id)
 
-    const res = await api.get(`/assesment/diagnosis/${assesment_id}`)
+    if (!assessment_id) {
+      throw new Error("Assessment ID not found")
+    }
 
-    result.value = res.data
+    
+    const res = await api.get(`/assesment/diagnosis/${assessment_id}`)
+    const data = res.data
+
+    
+    result.value = {
+      assessment_id: data.assessment_id,
+      scores: Array.isArray(data.scores) ? data.scores : [],
+      results: Array.isArray(data.results) ? data.results : [],
+    }
 
     toast.success("Berhasil mendapatkan hasil diagnosis")
-
-
   } catch (error) {
+    console.error(error)
     toast.error("Gagal mendapatkan hasil diagnosis")
   }
 }
@@ -156,16 +190,14 @@ const clearSession = async () => {
 }
 
 
-// const fetchLastResult = async () => {
-//   try {
-//     // const res = await api.get(`jawaban/diagnosis/${userId}/last`);
-//     const res = await api.get(`diagnosis/get_result/${userId}`)
-//     result.value = res.data.best_match;
-//     toast.success("Berhasil mendapatkan hasil diagnosis");
-//   } catch (error) {
-//     toast.error("Gagal mendapatkan hasil diagnosis");
-//   }
-// };
+
+const getFinalScore = (category: string) => {
+  return (
+    result.value?.scores.find(
+      (s) => s.category === category
+    )?.final_score ?? "-"
+  )
+}
 
 const downloadPdf = () => {
   if (!result.value?.results?.length) {
@@ -229,6 +261,15 @@ const downloadPdf = () => {
     pdf.text(`${index + 1}. ${item.category}`, marginX, y);
     y += 6;
 
+    pdf.setFont("helvetica", "normal")
+
+    pdf.text(
+    `Skor      : ${getFinalScore(item.category)}`,
+    marginX + 5,
+    y
+  )
+  y += 5
+
     pdf.setFont("helvetica", "normal");
     pdf.text(`Tingkat   : ${item.level}`, marginX + 5, y);
     y += 5;
@@ -274,8 +315,8 @@ const downloadPdf = () => {
 };
 
 onMounted(() => {
-  fetchDiagnosis();
   fetchProfile();
+  fetchDiagnosis();
 });
 </script>
 <style></style>
