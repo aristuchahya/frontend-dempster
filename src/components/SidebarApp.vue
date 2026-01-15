@@ -78,12 +78,12 @@ const items = [
     icon: SquareActivity,
     role: "user",
   },
-  {
-    title: "Data Gejala",
-    url: "/gejala",
-    icon: BriefcaseMedical,
-    role: "admin",
-  },
+  // {
+  //   title: "Data Gejala",
+  //   url: "/gejala",
+  //   icon: BriefcaseMedical,
+  //   role: "admin",
+  // },
   {
     title: "Data Aturan",
     url: "/aturan",

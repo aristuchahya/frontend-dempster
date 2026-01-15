@@ -43,6 +43,10 @@
           </a> -->
           <router-link to="/register" class="underline"> Sign up </router-link>
         </div>
+        <div class="mt-1 text-center text-sm">
+          Back to home?
+          <router-link to="/dashboard" class="underline"> Home </router-link>
+        </div>
       </div>
     </div>
 
