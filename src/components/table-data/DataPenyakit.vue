@@ -4,11 +4,11 @@
     <header class="flex items-center justify-between px-6 py-4 border-b">
       <h1 class="text-lg font-semibold">Sistem Diagnosis</h1>
 
-      <RouterLink to="/login">
+      <!-- <RouterLink to="/login">
         <Button variant="ghost" class="text-sm">
           Login Admin
         </Button>
-      </RouterLink>
+      </RouterLink> -->
     </header>
 
     <!-- Content -->

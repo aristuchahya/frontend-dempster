@@ -3,11 +3,11 @@ export interface Profile {
   nama: string;
   jenis_kelamin: string;
   umur: number;
-  noip: string;
+  // noip: string;
   tanggal: string;
   whatsapp: string;
   nama_orangtua: string;
   prodi: string;
   semester: string;
-  asuransi: string;
+  // asuransi: string;
 }

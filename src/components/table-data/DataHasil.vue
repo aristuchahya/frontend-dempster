@@ -19,5 +19,13 @@ import useHasil from "@/service/hasil";
 import FormReuse from "../form-data/FormReuse.vue";
 
 const {hasil, columns, submitFilter} = useHasil()
+
+// const formatTanggal = (dateString: string) => {
+//   return new Date(dateString).toLocaleDateString("id-ID", {
+//     day: "2-digit",
+//     month: "2-digit",
+//     year: "numeric",
+//   })
+// }
 </script>
 <style></style>

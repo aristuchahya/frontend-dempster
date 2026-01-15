@@ -24,4 +24,5 @@ export interface Hasil {
   category: string
   level: string
   disease: string
+  tanggal: string
 }

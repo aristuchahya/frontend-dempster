@@ -16,7 +16,7 @@ export default function useProfile() {
       nama: z.string().min(1, "Nama tidak boleh kosong"),
       jenis_kelamin: z.enum(["Laki-laki", "Perempuan"]),
       umur: z.number().min(1, "Umur tidak boleh kosong"),
-      noip: z.string().min(1, "Nomor IP tidak boleh kosong"),
+      // noip: z.string().min(1, "Nomor IP tidak boleh kosong"),
       tanggal: z
         .string()
         .regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal harus YYYY-MM-DD"),
@@ -24,7 +24,7 @@ export default function useProfile() {
       nama_orangtua: z.string().min(1, "Nama Orangtua tidak boleh kosong"),
       prodi: z.string().min(1, "Program Studi tidak boleh kosong"),
       semester: z.string().min(1, "Semester tidak boleh kosong"),
-      asuransi: z.string().min(1, "Asuransi tidak boleh kosong"),
+      // asuransi: z.string().min(1, "Asuransi tidak boleh kosong"),
     })
   );
 
